@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="da">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+    <link rel="stylesheet" href="">
+
+</head>
+
+
+
+<body>
+
+
+
+    <script>
+        var today = new Date();
+        var timeNow = today.getHours()
+        let greeting
+
+        switch (true) {
+
+            case timeNow < 10:
+                greeting = "Godmorgen";
+                break;
+            case timeNow < 18:
+                greeting = "Goddag";
+                break;
+            case timeNow < 24:
+                greeting = "Godaften";
+                break;
+            case timeNow < 5:
+                greeting = "Godnat";
+        }
+
+        console.log(greeting);
+
+    </script>
+
+</body>
+
+</html>
