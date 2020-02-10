@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="da">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        img {
+            max-width: 100%;
+        }
+
+        main {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 10px;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+        }
+
+        article {
+            padding: 10px;
+        }
+
+        h1, nav {
+            text-align: center;
+        }
+
+        button {
+            background-color: #777777;
+            border: none;
+            color: white;
+            padding: 15px 32px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+
+        }
+
+        .button_active {
+            background-color: #0a0909;
+
+        }
+    </style>
+</head>
+
+<body>
+
+    <h1>Alle</h1>
+
+    <nav>
+        <button class="filter button_active" data-kategori="forretter">Forretter</button>
+        <button class="filter" data-kategori="hovedretter">Hovedretter</button>
+        <button class="filter" data-kategori="sideorders">Sideorders</button>
+        <button class="filter" data-kategori="drikkevarer">Drikkevarer</button>
+    </nav>
+
+    <main class="data_con"></main>
+    <template>
+        <article id="retter">
+
+            <h2></h2>
+            <img src="" alt="">
+            <p class="navn"></p>
+            <p class="kort"></p>
+            <p class="pris"></p>
+
+        </article>
+    </template>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", start);
+
+        const data_con = document.querySelector(".data_con");
+        let filter = "alle";
+        let retter = [];
+        const endpoint = ("https://spreadsheets.google.com/feeds/list/17Dd7DvkPaFamNUdUKlrFgnH6POvBJXac7qyiS6zNRw0/od6/public/values?alt=json")
+
+        function start() {
+            loadData();
+            addEventlistenersToButtons();
+        }
+
+        async function loadData() {
+            const response = await fetch(endpoint);
+            retter = await response.json();
+            console.log(response);
+
+            visRetter();
+
+        }
+
+
+        function visRetter() {
+
+            //const data_con = document.querySelector(".data_con");
+            data_con.innerHTML = "";
+            const retTemplate = document.querySelector("template");
+
+            retter.feed.entry.forEach(ret => {
+                if (filter == "alle" || filter == ret.gsx$kategori.$t) {
+                    let klon = retTemplate.cloneNode(true).content;
+
+                    klon.querySelector("h2").textContent = `Navn: ${ret.gsx$navn.$t}`;
+                    klon.querySelector(".kort").textContent = `Kort: ${ret.gsx$kort.$t}`;
+                    klon.querySelector(".pris").textContent = `Pris: ${ret.gsx$pris.$t}`;
+                    klon.querySelector("img").src = `${ret.gsx$billede.$t}`;
+
+                    data_con.appendChild(klon);
+
+                }
+            })
+
+        }
+
+
+        function addEventlistenersToButtons() {
+            document.querySelectorAll(".filter").forEach(elm => {
+                elm.addEventListener("click", filtrering);
+            })
+        }
+
+        function filtrering() {
+            console.log("FILTER");
+            document.querySelectorAll(".filter").forEach(elm => {
+                elm.classList.remove("button_active");
+            })
+            filter = this.dataset.kategori;
+            this.classList.add("button_active");
+            document.querySelector("h1").textContent = this.textContent;
+
+
+            visRetter();
+        }
+    </script>
+</body></html>
