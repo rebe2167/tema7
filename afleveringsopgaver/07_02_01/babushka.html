@@ -26,7 +26,8 @@
             padding: 10px;
         }
 
-        h1, nav {
+        h1,
+        nav {
             text-align: center;
         }
 
@@ -46,16 +47,18 @@
             background-color: #0a0909;
 
         }
+
     </style>
 </head>
 
 <body>
 
-    <h1>Alle</h1>
+    <h1>Babushka</h1>
 
     <nav>
         <button class="filter button_active" data-kategori="forretter">Forretter</button>
         <button class="filter" data-kategori="hovedretter">Hovedretter</button>
+        <button class="filter" data-kategori="desserter">Desserter</button>
         <button class="filter" data-kategori="sideorders">Sideorders</button>
         <button class="filter" data-kategori="drikkevarer">Drikkevarer</button>
     </nav>
@@ -64,8 +67,9 @@
     <template>
         <article id="retter">
 
-            <h2></h2>
+
             <img src="" alt="">
+            <h2></h2>
             <p class="navn"></p>
             <p class="kort"></p>
             <p class="pris"></p>
@@ -106,10 +110,10 @@
                 if (filter == "alle" || filter == ret.gsx$kategori.$t) {
                     let klon = retTemplate.cloneNode(true).content;
 
-                    klon.querySelector("h2").textContent = `Navn: ${ret.gsx$navn.$t}`;
-                    klon.querySelector(".kort").textContent = `Kort: ${ret.gsx$kort.$t}`;
-                    klon.querySelector(".pris").textContent = `Pris: ${ret.gsx$pris.$t}`;
-                    klon.querySelector("img").src = `${ret.gsx$billede.$t}`;
+                    klon.querySelector("h2").textContent = `${ret.gsx$navn.$t}`;
+                    klon.querySelector(".kort").textContent = `${ret.gsx$kort.$t}`;
+                    klon.querySelector(".pris").textContent = `Pris: ${ret.gsx$pris.$t},-`;
+                    klon.querySelector("img").src = `imgs/small/${ret.gsx$billede.$t}-sm.jpg`;
 
                     data_con.appendChild(klon);
 
@@ -137,5 +141,8 @@
 
             visRetter();
         }
+
     </script>
-</body></html>
+</body>
+
+</html>
