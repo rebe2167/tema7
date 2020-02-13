@@ -1,40 +1,61 @@
 <!DOCTYPE html>
 <html lang="">
+
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title></title>
 
     <style>
+        * {
+            box-sizing: border-box;
+            font-family: 'Roboto', sans-serif;
+        }
 
-    img {
+        img {
             max-width: 100%;
         }
 
-      #detalje {
+        #detalje {
             position: fixed;
+            padding: 20px;
             top: 0;
             width: 100vw;
             height: 100vh;
-            background-color: rgba(0, 0, 0, 0.5);
             overflow: scroll;
+            text-align: center;
         }
 
-        #detalje button{
-            font-size:
+        #detalje img {
+            width: 65%;
+            height: 65%;
         }
 
-        .person{
-            cursor: pointer;
+        #detalje p {
+            margin: 15px;
         }
 
-        #detalje .person{
-            margin: 3em;
-            padding: 2em;
-            background-color: white;
-
+        #detalje .pris {
+            font-weight: bold;
         }
 
+        button {
+            text-decoration: none;
+            background: none;
+            border: none;
+        }
+
+        i {
+            border: solid black;
+            border-width: 0 2px 2px 0;
+            display: inline-block;
+            padding: 3px;
+        }
+
+        .left_arrow {
+            transform: rotate(135deg);
+            -webkit-transform: rotate(135deg);
+        }
 
 
     </style>
@@ -45,11 +66,12 @@
 
 
     <section id="detalje" class="skjul">
-        <button>X</button>
+        <button><i class="left_arrow"></i>TILBAGE</button>
         <article class="person">
-            <h1>Navn</h1>
+            <h2>Navn</h2>
             <img src="">
             <p></p>
+            <p class="pris"></p>
         </article>
     </section>
 
@@ -57,10 +79,10 @@
 
 
     <script>
-         document.addEventListener("DOMContentLoaded", start);
+        document.addEventListener("DOMContentLoaded", start);
 
-      const urlParams = new URLSearchParams(window.location.search)
-      const id = urlParams.get("id");
+        const urlParams = new URLSearchParams(window.location.search)
+        const id = urlParams.get("id");
 
         const detalje = document.querySelector("#detalje");
         let filter = "alle";
@@ -88,19 +110,23 @@
             retter.feed.entry.forEach(ret => {
                 if (ret.gsx$id.$t == id) {
 
-            detalje.querySelector("h1").textContent = ret.gsx$navn.$t;
-            detalje.querySelector("img").src = `imgs/large/${ret.gsx$billede.$t}.jpg`;
+                    detalje.querySelector("h2").textContent = ret.gsx$navn.$t;
+                    detalje.querySelector("p").textContent = ret.gsx$lang.$t;
+                    detalje.querySelector(".pris").textContent = `Pris: ${ret.gsx$pris.$t},-`;
+                    detalje.querySelector("img").src = `imgs/large/${ret.gsx$billede.$t}.jpg`;
 
                 }
             });
 
             detalje.querySelector("button").addEventListener("click", skjulDetalje);
 
-             }
+        }
 
-         function skjulDetalje(){
-              history.back();}
-
+        function skjulDetalje() {
+            history.back();
+        }
 
     </script>
-</body></html>
+</body>
+
+</html>

@@ -6,12 +6,54 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title></title>
     <style>
-        * {
+         * {
             box-sizing: border-box;
+            font-family: 'Roboto', sans-serif;
+        }
+
+        p {
+            margin: 2px;
         }
 
         img {
             max-width: 100%;
+        }
+
+        .card {
+            box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+            transition: 0.3s;
+            width: 100%;
+
+        }
+
+        .card:hover {
+            box-shadow: 0 8px 16px 0 rgba(0, 0, 0, 0.2);
+        }
+
+
+        #navbar {
+            background-color: rgba(81, 7, 5, 0.85);
+            position: fixed;
+            top: -50px;
+            width: 100%;
+            display: block;
+            transition: top 0.3s;
+            font-weight: bold;
+
+        }
+
+        #navbar a {
+            float: left;
+            display: block;
+            color: #f2f2f2;
+            padding: 15px;
+            text-decoration: none;
+            font-size: 17px;
+        }
+
+        #navbar a:hover {
+            background-color: #ddd;
+            color: black;
         }
 
         #showcase_container {
@@ -25,7 +67,8 @@
             text-align: center;
             align-content: center;
             align-items: center;
-            font-size: 3em;
+            font-size: 2.5em;
+            font-weight: bold;
             letter-spacing: 0.3em;
 
         }
@@ -50,17 +93,23 @@
             padding: 10px;
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            grid-gap: 20px;
         }
 
         article {
             padding: 10px;
         }
 
+        h1,
+        nav {
+            text-align: center;
+        }
 
-        button {
-            background-color: #777777;
-            border: none;
-            color: white;
+
+        nav button {
+
+             border: none;
+            color: #523E29;
             padding: 15px 32px;
             text-align: center;
             text-decoration: none;
@@ -69,9 +118,12 @@
 
         }
 
-        .button_active {
-            background-color: #0a0909;
+        nav button:hover {
+            border-bottom: solid 1px #523E29;
+        }
 
+        nav .button_active {
+            border-bottom: solid 1px #523E29;
         }
 
         #detalje {
@@ -81,14 +133,40 @@
             height: 100vh;
             background-color: rgba(0, 0, 0, 0.5);
             overflow: scroll;
+            text-align: center;
         }
 
-        #detalje button {
-            font-size:
+        #detalje img {
+            width: 50%;
+            height: 50%;
+        }
+
+         #detalje p {
+            margin: 15px;
+        }
+
+        #detalje .pris {
+            font-weight: bold;
         }
 
         .ret {
             cursor: pointer;
+        }
+
+        article {
+            cursor: pointer;
+        }
+
+        i {
+            border: solid black;
+            border-width: 0 2px 2px 0;
+            display: inline-block;
+            padding: 3px;
+        }
+
+        .left_arrow {
+            transform: rotate(135deg);
+            -webkit-transform: rotate(135deg);
         }
 
         #detalje .ret {
@@ -96,6 +174,19 @@
             padding: 2em;
             background-color: white;
 
+        }
+
+
+        #retter {
+            display: flex;
+            justify-content: space-between;
+            flex-direction: column;
+        }
+
+        #retter .pris {
+            display: flex;
+            justify-content: flex-end;
+            font-weight: bold;
         }
 
 
@@ -108,9 +199,21 @@
 
 <body>
 
+    <div id="navbar">
+
+       <div>
+            <a href="single_view/babushka_single.html">Babushka</a>
+        </div>
+        <div class="">
+            <a href="single_view/babushka_single.html">Single view</a>
+            <a href="babushka.html">Pop up</a>
+        </div>
+
+    </div>
+
     <header id="showcase">
         <div id="showcase_container">
-            <h2>Bistro Babushka</h2>
+            <h1>Bistro Babushka</h1>
         </div>
     </header>
 
@@ -125,9 +228,9 @@
     <main class="data_con"></main>
 
     <section id="detalje" class="skjul">
-        <button>X</button>
+        <button><i class="left_arrow"></i>TILBAGE</button>
         <article class="ret">
-            <h1>Navn</h1>
+            <h2>Navn</h2>
             <img src="" alt="">
             <p class="kort"></p>
             <p class="pris"></p>
@@ -135,7 +238,7 @@
     </section>
 
     <template>
-        <article id="retter">
+        <article id="retter" class="card">
 
 
             <img src="" alt="">
@@ -149,6 +252,19 @@
 
     <script>
         document.addEventListener("DOMContentLoaded", start);
+
+        // når brugeren scroller 20px ned kommer navbar frem
+        window.onscroll = function() {
+            scrollFunction()
+        };
+
+        function scrollFunction() {
+            if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+                document.getElementById("navbar").style.top = "0";
+            } else {
+                document.getElementById("navbar").style.top = "-50px";
+            }
+        }
 
         const data_con = document.querySelector(".data_con");
         let retter = [];
@@ -201,7 +317,7 @@
             detalje.classList.remove("skjul");
             detalje.querySelector("button").addEventListener("click", () => detalje.classList.add("skjul"));
             //console.log(person);
-            detalje.querySelector("h1").textContent = ret.gsx$navn.$t;
+            detalje.querySelector("h2").textContent = ret.gsx$navn.$t;
             detalje.querySelector(".kort").textContent = ret.gsx$kort.$t;
             detalje.querySelector(".pris").textContent = ret.gsx$pris.$t;
             detalje.querySelector("img").src = `imgs/small/${ret.gsx$billede.$t}-sm.jpg`;
@@ -221,7 +337,7 @@
             })
             filter = this.dataset.kategori;
             this.classList.add("button_active");
-            document.querySelector("h1").textContent = this.textContent;
+            document.querySelector("h2").textContent = this.textContent;
 
 
             visRetter();
