@@ -48,6 +48,34 @@
 
         }
 
+        #detalje {
+            position: fixed;
+            top: 0;
+            width: 100vw;
+            height: 100vh;
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+
+        #detalje button {
+            font-size:
+        }
+
+        .ret {
+            cursor: pointer;
+        }
+
+        #detalje .ret {
+            margin: 3em;
+            padding: 2em;
+            background-color: white;
+
+        }
+
+
+        .skjul {
+            display: none;
+        }
+
     </style>
 </head>
 
@@ -64,6 +92,17 @@
     </nav>
 
     <main class="data_con"></main>
+
+    <section id="detalje" class="skjul">
+        <button>X</button>
+        <article class="ret">
+            <h1>Navn</h1>
+            <img src="" alt="">
+            <p class="kort"></p>
+            <p class="pris"></p>
+        </article>
+    </section>
+
     <template>
         <article id="retter">
 
@@ -83,7 +122,8 @@
         const data_con = document.querySelector(".data_con");
         let filter = "alle";
         let retter = [];
-        const endpoint = ("https://spreadsheets.google.com/feeds/list/17Dd7DvkPaFamNUdUKlrFgnH6POvBJXac7qyiS6zNRw0/od6/public/values?alt=json")
+        const endpoint = ("https://spreadsheets.google.com/feeds/list/17Dd7DvkPaFamNUdUKlrFgnH6POvBJXac7qyiS6zNRw0/od6/public/values?alt=json");
+        const detalje = document.querySelector("#detalje");
 
         function start() {
             loadData();
@@ -115,11 +155,25 @@
                     klon.querySelector(".pris").textContent = `Pris: ${ret.gsx$pris.$t},-`;
                     klon.querySelector("img").src = `imgs/small/${ret.gsx$billede.$t}-sm.jpg`;
 
+                    klon.querySelector("article").addEventListener("click", function() {
+                        visDetalje(ret);
+                    });
+
                     data_con.appendChild(klon);
 
                 }
             })
 
+        }
+
+        function visDetalje(ret) {
+            detalje.classList.remove("skjul");
+            detalje.querySelector("button").addEventListener("click", () => detalje.classList.add("skjul"));
+            //console.log(person);
+            detalje.querySelector("h1").textContent = ret.gsx$navn.$t;
+            detalje.querySelector(".kort").textContent = ret.gsx$kort.$t;
+            detalje.querySelector(".pris").textContent = ret.gsx$pris.$t;
+            detalje.querySelector("img").src = `imgs/small/${ret.gsx$billede.$t}-sm.jpg`;
         }
 
 

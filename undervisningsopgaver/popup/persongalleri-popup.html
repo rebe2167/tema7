@@ -96,7 +96,8 @@
        <button>X</button>
         <article class="person">
             <h1>Navn</h1>
-            <img src="">
+            <img src="" alt="">
+            <p class="religion"></p>
             <p></p>
         </article>
     </section>
@@ -172,6 +173,7 @@
             detalje.querySelector("button").addEventListener("click", ()=>detalje.classList.add("skjul"));
             //console.log(person);
             detalje.querySelector("h1").textContent = person.gsx$navn.$t;
+            detalje.querySelector("p").textContent = person.gsx$hobby.$t;
             detalje.querySelector("img").src = person.gsx$billede.$t;
 
         }
