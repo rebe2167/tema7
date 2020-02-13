@@ -14,6 +14,36 @@
             max-width: 100%;
         }
 
+        #showcase_container {
+            background: rgba(98, 63, 37, 0.5);
+            width: 100vw;
+            height: 25vw;
+            z-index: 2;
+            color: #fff;
+            display: flex;
+            justify-content: center;
+            text-align: center;
+            align-content: center;
+            align-items: center;
+            font-size: 3em;
+            letter-spacing: 0.3em;
+
+        }
+
+        #showcase {
+            background-image: url(imgs/splash/bistro_splash.jpg);
+            background-size: cover;
+            width: 100vw;
+            height: 25vw;
+        }
+
+        nav {
+            margin-top: 20px;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+
+
         main {
             max-width: 1000px;
             margin: 0 auto;
@@ -26,10 +56,6 @@
             padding: 10px;
         }
 
-        h1,
-        nav {
-            text-align: center;
-        }
 
         button {
             background-color: #777777;
@@ -82,7 +108,11 @@
 
 <body>
 
-    <h1>Babushka</h1>
+    <header id="showcase">
+        <div id="showcase_container">
+            <h2>Bistro Babushka</h2>
+        </div>
+    </header>
 
     <nav>
         <button class="filter button_active" data-kategori="forretter">Forretter</button>
@@ -121,8 +151,8 @@
         document.addEventListener("DOMContentLoaded", start);
 
         const data_con = document.querySelector(".data_con");
-        let filter = "alle";
         let retter = [];
+        let filter = "alle";
         const endpoint = ("https://spreadsheets.google.com/feeds/list/17Dd7DvkPaFamNUdUKlrFgnH6POvBJXac7qyiS6zNRw0/od6/public/values?alt=json");
         const detalje = document.querySelector("#detalje");
 
@@ -134,10 +164,8 @@
         async function loadData() {
             const response = await fetch(endpoint);
             retter = await response.json();
-            console.log(response);
 
             visRetter();
-
         }
 
 
@@ -157,13 +185,15 @@
                     klon.querySelector("img").src = `imgs/small/${ret.gsx$billede.$t}-sm.jpg`;
 
                     klon.querySelector("article").addEventListener("click", function() {
-                        visDetalje(ret);
+                        //                        visDetalje(ret);
+                        location.href = "single.html?id=" + ret.gsx$id.$t;
                     });
 
                     data_con.appendChild(klon);
 
+
                 }
-            })
+            });
 
         }
 
@@ -185,7 +215,7 @@
         }
 
         function filtrering() {
-            console.log("FILTER");
+//            console.log("FILTER");
             document.querySelectorAll(".filter").forEach(elm => {
                 elm.classList.remove("button_active");
             })
